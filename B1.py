@@ -11,12 +11,12 @@ and checking if then last digit matches the unit digit. """
 
 class Luhn:
     cardNr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
     def __init__(self, cardNr):
         self.cardNr = cardNr
 
     def calc_check_digit(self, cardNr):
         cardNr = cardNr
+        #print(cardNr)
         sum = 0
         for i in range(0, 15):
             if i % 2 == 0:
@@ -29,9 +29,11 @@ class Luhn:
         #print("Sum =", sum)
         #print("10 - unit digit =", 10-(sum % 10), "= check digit")
         print(10-(sum%10), end="")
+        #print(10 - (sum % 10))
 
     def calc_card_number(self, cardNr):
         cardNr = cardNr
+        #print(cardNr)
         sum = 0
         checker = None
         checkDigit = cardNr[-1]
@@ -52,6 +54,8 @@ class Luhn:
 
         #print("Sum =", sum, "+ X")
         unitDigit = 10 - checkDigit
+        if unitDigit == 10:
+            unitDigit = 0
         #print("Unit digit = 10 -", checkDigit, "=", unitDigit)
         for j in range(0, 10):
             secondSum = sum + j
@@ -59,16 +63,20 @@ class Luhn:
                 if checker:
                     if j < 5 or j % 2 == 0:
                         print(int(j / 2), end="")
+                        #print(int(j / 2))
                     else:
                         print(int((j+9)/2), end="")
+                        #print(int((j + 9) / 2))
                 else:
                     #print("X =", j, "gives sum =", sum + j, "mod10 = 1 = unit digit")
                     print(j, end="")
+                    #print(j)
 
 
 file = open('cardnrlistjames', 'r')
+cardsCounted = 0
 for line in file:
-
+    cardsCounted += 1
     cardNrString = list(line)
     cardNr = []
     for k in range (0, 16):
@@ -82,6 +90,5 @@ for line in file:
         Luhn1.calc_check_digit(cardNr)
     else:
         Luhn1.calc_card_number(cardNr)
-
 
 
