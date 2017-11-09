@@ -1,4 +1,3 @@
-
 """ Luhn Algorithm:
 In this case, all card numbers have 16 digits, where the last digit is the check digit. Starting from the check digit 
 and moving left, double the value of every second digit. If the result of the doubling is greater than 9, subtract 9. 
@@ -8,6 +7,7 @@ In Luhn's algorithm, the check digit is calculated by subtracting the last digit
 In this case, we are given the check digit, so find the unit digit by subtracting the check digit from 10. Know we know 
 what the last digit of sum+X should be. Find X by adding for all possible values in the range (0, 9) to the sum
 and checking if then last digit matches the unit digit. """
+from __future__ import print_function
 
 class Luhn:
     cardNr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -53,19 +53,17 @@ class Luhn:
                     sum += cardNr[i]
 
         #print("Sum =", sum, "+ X")
-        unitDigit = 10 - checkDigit
-        if unitDigit == 10:
-            unitDigit = 0
+        unitDigit = (10 - checkDigit) % 10
         #print("Unit digit = 10 -", checkDigit, "=", unitDigit)
         for j in range(0, 10):
             secondSum = sum + j
             if secondSum % 10 == unitDigit:
                 if checker:
-                    if j < 5 or j % 2 == 0:
+                    if j % 2 == 0:
                         print(int(j / 2), end="")
                         #print(int(j / 2))
                     else:
-                        print(int((j+9)/2), end="")
+                        print(int((j+9)/2), end ="")
                         #print(int((j + 9) / 2))
                 else:
                     #print("X =", j, "gives sum =", sum + j, "mod10 = 1 = unit digit")
@@ -90,5 +88,4 @@ for line in file:
         Luhn1.calc_check_digit(cardNr)
     else:
         Luhn1.calc_card_number(cardNr)
-
 
