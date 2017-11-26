@@ -11,7 +11,6 @@ def print_output (sets):
         print(ip)
         if len(ip) > 1:
             print("Fail: one or more of the sets contains more than 1 IP")
-            #break
         else:
             ip_sum += int(netaddr.IPAddress(ip.pop()))
     else:
@@ -19,20 +18,15 @@ def print_output (sets):
 
 def check (potential_scum, sets):
     for i in xrange(len(sets)):
+        # Checks if sets[i] is empty
         if sets[i]:
-            print("intersection: ",sets[i].intersection(potential_scum))
-            print("A_set: ", i, sets[i])
+            # The subset (intersection) between the current set and potential_scum contains at least 1 element
             if len(sets[i].intersection(potential_scum)) > 0:
-                print("length was: ", len(sets[i].intersection(potential_scum)))
                 sets[i] = sets[i].intersection(potential_scum)
                 break
-            else:
-                # No matches
-                print("No Match")
         else:
             # No previous elements, initialize new set
             sets[i] = set(potential_scum)
-            print("Initialize new set: ", i, sets[i])
             break
 
 def main ():
@@ -40,7 +34,7 @@ def main ():
     mix_ip = sys.argv[3]
     nr_partners = int(sys.argv[4])
 
-    index = 0
+    # Initializes an Array of sets, one for each of Nazir's partners
     sets = [set() for _ in xrange(nr_partners)]
 
     testcap = open(sys.argv[1], 'rb')
@@ -57,6 +51,7 @@ def main ():
         # Packets sent TO the mixer
         if ip_dst == mix_ip:
             if destinations and packets_from_nazir != 0:
+                # Takes all destinations which matches the amount of packets recived with packets sent from Nazir
                 potential_scum = [dest for dest in destinations if destinations[dest] == packets_from_nazir]
                 check(potential_scum, sets)
                 packets_from_nazir = 0
