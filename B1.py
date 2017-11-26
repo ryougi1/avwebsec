@@ -28,7 +28,7 @@ class Luhn:
                 sum += cardNr[i]
         #print("Sum =", sum)
         #print("10 - unit digit =", 10-(sum % 10), "= check digit")
-        print(10-(sum%10), end="")
+        print((10 - (sum%10)) % 10, end="")
         #print(10 - (sum % 10))
 
     def calc_card_number(self, cardNr):
