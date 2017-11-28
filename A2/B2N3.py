@@ -1,5 +1,6 @@
 from __future__ import print_function
 from pcapfile import savefile
+from random import randint
 import netaddr
 import sys
 
@@ -14,7 +15,11 @@ def test():
         print(current_set)
     #print(all_potential_scum)
 
-
+def is_mutually_disjoint(current_potential_scum):
+    for aset in sets:
+        if len(aset.intersection(current_potential_scum)) > 0:
+            return False
+    return True
 
 def main ():
     testcap = open(sys.argv[1], 'rb')
@@ -35,10 +40,9 @@ def main ():
         for reuse and reset has_sent flag and last_sender
         '''
         if last_sender == mix_ip and ip_dst == mix_ip and current_potential_scum:
-            #print("Appended: ", current_potential_scum)
+            #if is_mutually_disjoint(current_potential_scum):
             sets.append(current_potential_scum)
             current_potential_scum = set()
-            #print("After clearing: ", current_potential_scum)
             has_sent = False
             last_sender = ""
 
@@ -52,35 +56,41 @@ def main ():
                 current_potential_scum.add(ip_dst)
             last_sender = mix_ip
 
+    print("Nr of sets captured: ", len(sets))
+    #for current_set in sets:
+        #print(current_set)
+
     #Exluding phase
     isNotDone = True
     current_loop = 0
     while(isNotDone):
         print("Current loop:", current_loop)
-        for i in range(len(sets)-2):
-            RnRi = sets[i].intersection(sets[i + 1])
-            RnRj = sets[i].intersection(sets[i + 2])
-            if len(RnRi) > 0 and len(RnRj) == 0:
-                #print("Found one")
-                print("RnRi: ", RnRi)
-                print("RnRj: ", RnRj)
-                print(sets[i], "changed to:", RnRi)
-                sets[i] = RnRi
-            elif len(RnRj) > 0 and len(RnRi) == 0:
-                print("RnRi: ", RnRi)
-                print("RnRj: ", RnRj)
-                print(sets[i], "changed to:", RnRj)
-                sets[i] = RnRj
+        i = 1
+        j = 2
+        for r in range(len(sets)):
+            if i != j:
+                RnRi = sets[r].intersection(sets[i])
+                RnRj = sets[r].intersection(sets[j])
+                if len(RnRi) > 0 and len(RnRj) == 0:
+                    #print("Found one")
+                    #print("RnRi: ", RnRi)
+                    #print("RnRj: ", RnRj)
+                    #print(sets[i], "changed to:", RnRi)
+                    sets[i] = RnRi
+            i = randint(0,len(sets)-1)
+            j = randint(0,len(sets)-1)
 
         current_loop += 1
         isNotDone = False
         for aset in sets:
-            if len(aset) > nr_partners:
+            if len(aset) > 1:
                 isNotDone = True
-                print("Set that is fucking us:", aset, "at index", sets.index(aset))
+                #print("Set that is fucking us:", aset, "at index", sets.index(aset))
                 break
 
+    #Length of all sets should now be 1
+    for aset in sets:
+        print(aset)
 
-    #test()
 if __name__ == "__main__":
     main()
