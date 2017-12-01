@@ -13,4 +13,7 @@ sxor = sa ^ sb
 if(b == 1):
     print("Output: ", hex(sxor ^ m)[2:])
 else:
-    print("Output: ", hex(sxor)[2:] + hex(sxor ^ da ^ db)[2:])
+    end = hex(sxor ^ da ^ db)[2:]
+    if len(end) < 4:
+        end += "000"
+    print("Output: ", hex(sxor)[2:] + end)
