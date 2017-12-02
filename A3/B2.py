@@ -5,15 +5,15 @@ doesn't seem to be needed.
 '''
 
 # Private polynomial
-poly = [13, 8, 11, 1, 5]
+poly = [20, 20, 11, 6]
 
 # Shares from other participants polynomials, i.e. f(1) for each
-shares = [75, 75, 54, 52, 77, 54, 43]
+shares = [63, 49, 49, 54, 43]
 
 # The sum of the two above becomes the first point, i.e. f(1)
 
 # Points on the master polynomial from other participants (and private) on form (x, y)
-points = [(1, sum(poly) + sum(shares)), (2, 2782), (4, 30822), (5, 70960), (7, 256422)]
+points = [(1, sum(poly) + sum(shares)), (3, 2199), (4, 4389), (6, 12585)]
 
 result = 0
 
