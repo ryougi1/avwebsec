@@ -5,16 +5,15 @@ doesn't seem to be needed.
 '''
 
 # Private polynomial
-poly = [13,8,11,1,5]
+poly = [13, 8, 11, 1, 5]
 
 # Shares from other participants polynomials, i.e. f(1) for each
 shares = [75, 75, 54, 52, 77, 54, 43]
 
-# Calculate your own point
-private_point = sum(poly)
+# The sum of the two above becomes the first point, i.e. f(1)
 
 # Points on the master polynomial from other participants (and private) on form (x, y)
-points = [(1, private_point), (2, 2782), (4, 30822), (5, 70960), (7, 256422)]
+points = [(1, sum(poly) + sum(shares)), (2, 2782), (4, 30822), (5, 70960), (7, 256422)]
 
 result = 0
 
@@ -30,7 +29,7 @@ for i in range(len(points)):
             numerator *= 0 - points[j][0]
             denominator *= points[i][0] - points[j][0]
 
-
     result += points[i][1] * numerator / denominator
 
-print(result)
+# Gotta add .5 to round correctly, otherwise 109.99999999997817 is rounded down to 109.
+print(int(result + .5))
